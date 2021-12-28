@@ -1,4 +1,4 @@
-import { GithubAuthProvider, getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { GithubAuthProvider, getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
 import './App.css';
 import initializeAuthentication from './firebase/firebase.initialize';
 
@@ -60,10 +60,21 @@ function App() {
 
   }
 
+  const handleSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        setUser({})
+      })
+  }
+
   return (
     <div className="App">
-      <button onClick={handleGoogleSignIn}> Sign with google</button>
-      <button onClick={handleGithubSignIn}> Sign with github</button>
+      {!user.name ?
+        <div>
+          <button onClick={handleGoogleSignIn}> Sign with google</button>
+          <button onClick={handleGithubSignIn}> Sign with github</button>
+        </div> :
+        <button onClick={handleSignOut}> Sign out</button>}
 
       {user.email ?
         < div >
@@ -72,7 +83,7 @@ function App() {
 
         </div> : []
       }
-      
+
     </div >
   );
 }
