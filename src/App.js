@@ -64,16 +64,16 @@ function App() {
     <div className="App">
       <button onClick={handleGoogleSignIn}> Sign with google</button>
       <button onClick={handleGithubSignIn}> Sign with github</button>
-      {user.name &&
 
-        <div>
+      {user.email ?
+        < div >
           <h2> welcome {user.name}</h2>
-          <h2> your email {user.email}</h2>
-          <img src={user.photo} alt="" /> </div>
+          <img src={user.photo} alt="" />
 
+        </div> : []
       }
-
-    </div>
+      
+    </div >
   );
 }
 
