@@ -69,18 +69,17 @@ function App() {
 
   return (
     <div className="App">
-      {!user.email ?
+      {!user.name ?
         <div>
           <button onClick={handleGoogleSignIn}> Sign with google</button>
           <button onClick={handleGithubSignIn}> Sign with github</button>
         </div> :
-        <button onClick={handleSignOut}> Sign out</button> }
+        <button onClick={handleSignOut}> Sign out</button>}
 
       {user.name ?
-        < div >
+        <div>
           <h2> welcome {user.name}</h2>
           <img src={user.photo} alt="" />
-
         </div> : []
       }
 
