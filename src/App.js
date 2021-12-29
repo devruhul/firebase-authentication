@@ -1,4 +1,4 @@
-import { GithubAuthProvider, getAuth, signInWithPopup, GoogleAuthProvider, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail } from "firebase/auth";
+import { GithubAuthProvider, getAuth, signInWithPopup, GoogleAuthProvider, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, updateProfile } from "firebase/auth";
 import './App.css';
 import initializeAuthentication from './firebase/firebase.initialize';
 
@@ -11,6 +11,7 @@ const googleProvider = new GoogleAuthProvider()
 const githubProvider = new GithubAuthProvider()
 
 function App() {
+  const [name, setName] = useState('');
   const [user, setUser] = useState({});
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -32,12 +33,6 @@ function App() {
         setUser(loggedInUser)
 
       })
-      .catch(error => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        const email = error.email;
-        console.log(errorCode, errorMessage, email)
-      })
   }
 
   const handleGithubSignIn = () => {
@@ -53,12 +48,6 @@ function App() {
         setUser(loggedInUser)
 
       })
-      .catch(error => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        const email = error.email;
-        console.log(errorCode, errorMessage, email)
-      })
   }
 
   const handleSignOut = () => {
@@ -66,6 +55,13 @@ function App() {
       .then(() => {
         setUser({})
       })
+  }
+
+  const setUserName = () => {
+    updateProfile(auth.currentUser, {
+      displayName: name
+    })
+      .then(result => { })
   }
 
   const handleRegister = e => {
@@ -92,8 +88,9 @@ function App() {
       .then(result => {
         const user = result.user
         console.log(user)
-        setError('')
         handleVerifyEmail()
+        setUserName()
+        setError('')
       })
   }
 
@@ -118,6 +115,9 @@ function App() {
   const handlePasswordChange = e => {
     setPassword(e.target.value)
   }
+  const handleNameChange = e => {
+    setName(e.target.value)
+  }
 
   return (
     <div className="mx-5 container">
@@ -125,6 +125,12 @@ function App() {
         <div className="mx-auto mb-3" style={{ width: 200 }}>
           <h3 className="text-primary ml-5">Please {isLogIn ? 'Log In' : 'Register'}</h3>
         </div>
+        {!isLogIn && <div className="row mb-3">
+          <label htmlFor="inputName" className="col-sm-2 col-form-label">Name</label>
+          <div className="col-sm-10">
+            <input onBlur={handleNameChange} type="text" className="form-control" id="inputName" required />
+          </div>
+        </div>}
         <div className="row mb-3">
           <label htmlFor="inputEmail3" className="col-sm-2 col-form-label">Email</label>
           <div className="col-sm-10">
