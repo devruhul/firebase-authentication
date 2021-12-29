@@ -120,7 +120,7 @@ function App() {
   }
 
   return (
-    <div className="mx-5">
+    <div className="mx-5 container">
       <form onSubmit={handleRegister}>
         <div className="mx-auto mb-3" style={{ width: 200 }}>
           <h3 className="text-primary ml-5">Please {isLogIn ? 'Log In' : 'Register'}</h3>
@@ -159,8 +159,8 @@ function App() {
 
       {!user.name ?
         <div>
-          <button onClick={handleGoogleSignIn}> Sign with google</button>
-          <button onClick={handleGithubSignIn}> Sign with github</button>
+          <button className="btn btn-primary mx-3" onClick={handleGoogleSignIn}> Sign with google</button>
+          <button className="btn btn-dark" onClick={handleGithubSignIn}> Sign with github</button>
         </div> :
         <button onClick={handleSignOut}>
           Sign out
