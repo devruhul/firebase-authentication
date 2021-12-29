@@ -1,4 +1,4 @@
-import { GithubAuthProvider, getAuth, signInWithPopup, GoogleAuthProvider, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, updateProfile } from "firebase/auth";
+import { GithubAuthProvider, getAuth, signInWithPopup, GoogleAuthProvider, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, updateProfile, FacebookAuthProvider } from "firebase/auth";
 import './App.css';
 import initializeAuthentication from './firebase/firebase.initialize';
 
@@ -9,6 +9,7 @@ initializeAuthentication()
 
 const googleProvider = new GoogleAuthProvider()
 const githubProvider = new GithubAuthProvider()
+const facebookProvider = new FacebookAuthProvider()
 
 function App() {
   const [name, setName] = useState('');
@@ -49,6 +50,22 @@ function App() {
 
       })
   }
+
+  const handleFacebookSignIn = () => {
+    signInWithPopup(auth, facebookProvider)
+      .then(result => {
+        const { displayName, email, photoURL } = result.user;
+        const loggedInUser = {
+          name: displayName,
+          email: email,
+          photo: photoURL
+        };
+        console.log(loggedInUser)
+        setUser(loggedInUser)
+
+      })
+  }
+
 
   const handleSignOut = () => {
     signOut(auth)
@@ -138,7 +155,7 @@ function App() {
           </div>
         </div>
         <div className="row mb-3">
-          <label htmlFor="inputPassword3" className="col-sm-2 col-form-label">Password</label>
+          <label htmlFor="inputPassword3" className="col-sm-2 col-form-label"> Password</label>
           <div className="col-sm-10">
             <input onBlur={handlePasswordChange} type="password" className="form-control" id="inputPassword3" required />
           </div>
@@ -164,9 +181,10 @@ function App() {
       <br /><br /><br /><br /><br />
 
       {!user.name ?
-        <div>
+        <div className="container">
           <button className="btn btn-primary mx-3" onClick={handleGoogleSignIn}> Sign with google</button>
-          <button className="btn btn-dark" onClick={handleGithubSignIn}> Sign with github</button>
+          <button className="btn btn-dark mx-3" onClick={handleGithubSignIn}> Sign with github</button>
+          <button className="btn btn-success" onClick={handleFacebookSignIn}> Sign with facebook</button>
         </div> :
         <button onClick={handleSignOut}>
           Sign out
@@ -174,7 +192,7 @@ function App() {
       }
 
       {user.name ?
-        <div>
+        <div className="container ">
           <h2> welcome {user.name}</h2>
           <img src={user.photo} alt="" />
         </div> : []
