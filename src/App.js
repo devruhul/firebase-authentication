@@ -1,4 +1,4 @@
-import { GithubAuthProvider, getAuth, signInWithPopup, GoogleAuthProvider, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail  } from "firebase/auth";
+import { GithubAuthProvider, getAuth, signInWithPopup, GoogleAuthProvider, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail } from "firebase/auth";
 import './App.css';
 import initializeAuthentication from './firebase/firebase.initialize';
 
@@ -16,7 +16,6 @@ function App() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLogIn, setIsLogIn] = useState(false);
-
 
   const auth = getAuth();
 
@@ -42,7 +41,6 @@ function App() {
   }
 
   const handleGithubSignIn = () => {
-
     signInWithPopup(auth, githubProvider)
       .then(result => {
         const { displayName, email, photoURL } = result.user;
@@ -55,14 +53,12 @@ function App() {
         setUser(loggedInUser)
 
       })
-
       .catch(error => {
         const errorCode = error.code;
         const errorMessage = error.message;
         const email = error.email;
         console.log(errorCode, errorMessage, email)
       })
-
   }
 
   const handleSignOut = () => {
@@ -91,7 +87,6 @@ function App() {
     setIsLogIn(e.target.checked)
   }
 
-
   const createNewUser = (email, password) => {
     createUserWithEmailAndPassword(auth, email, password)
       .then(result => {
@@ -102,12 +97,13 @@ function App() {
       })
   }
 
-  const handleResetPassword = () =>  {
+  const handleResetPassword = () => {
     sendPasswordResetEmail(auth, email)
       .then(result => {
-      console.log(result)
-    })
+        console.log(result)
+      })
   }
+
   const handleVerifyEmail = () => {
     sendEmailVerification(auth.currentUser)
       .then(result => {
@@ -122,7 +118,6 @@ function App() {
   const handlePasswordChange = e => {
     setPassword(e.target.value)
   }
-
 
   return (
     <div className="mx-5">
@@ -142,7 +137,7 @@ function App() {
             <input onBlur={handlePasswordChange} type="password" className="form-control" id="inputPassword3" required />
           </div>
         </div>
-        <button type="button" className="btn btn-secondary ms-5"  data-bs-toggle="tooltip" data-bs-placement="top" title={error}>
+        <button type="button" className="btn btn-secondary ms-5" data-bs-toggle="tooltip" data-bs-placement="top" title={error}>
           {error}
         </button>
         <div className="row mb-3">
@@ -155,22 +150,22 @@ function App() {
             </div>
           </div>
         </div>
-        <button  type="submit" className="btn btn-primary mx-3">{isLogIn ? 'Log In' : 'Register'}</button>
+        <button type="submit" className="btn btn-primary mx-3">{isLogIn ? 'Log In' : 'Register'}</button>
 
-        <button type="button" onClick={handleResetPassword} className="btn btn-dark">Forget Password</button>
-
+        <button type="button" onClick={handleResetPassword} className="btn btn-dark">Forget Password</button>\
       </form>
 
       <br /><br /><br /><br /><br />
-
-
 
       {!user.name ?
         <div>
           <button onClick={handleGoogleSignIn}> Sign with google</button>
           <button onClick={handleGithubSignIn}> Sign with github</button>
         </div> :
-        <button onClick={handleSignOut}> Sign out</button>}
+        <button onClick={handleSignOut}>
+          Sign out
+        </button>
+      }
 
       {user.name ?
         <div>
